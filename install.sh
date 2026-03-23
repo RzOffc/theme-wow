@@ -11,8 +11,6 @@ installTheme(){
     RED='\033[0;31m'
     GREEN='\033[0;32m'
     YELLOW='\033[1;33m'
-    BLUE='\033[0;34m'
-    CYAN='\033[0;36m'
     RESET='\033[0m'
 
     echo -e "${GREEN}Installing sudo if not installed${RESET}"
@@ -38,11 +36,11 @@ installTheme(){
     echo -e "${GREEN}Checking Node.js version...${RESET}"
     NODE_VER=$(node -v 2>/dev/null | sed 's/v//' | cut -d. -f1)
     if [ -z "$NODE_VER" ] || [ "$NODE_VER" -lt 18 ]; then
-        echo -e "${YELLOW}Upgrading Node.js to v18...${RESET}"
+        echo -e "${YELLOW}Upgrading Node.js to v22...${RESET}"
         apt-get remove -y nodejs npm > /dev/null 2>&1
         apt-get autoremove -y > /dev/null 2>&1
         rm -rf /usr/local/n > /dev/null 2>&1
-        curl -fsSL https://deb.nodesource.com/setup_18.x | bash - > /dev/null 2>&1
+        curl -fsSL https://deb.nodesource.com/setup_22.x | bash - > /dev/null 2>&1
         apt-get install -y nodejs > /dev/null 2>&1
         echo -e "${GREEN}Node.js $(node -v) installed${RESET}"
     else
@@ -54,8 +52,10 @@ installTheme(){
     fi
 
     cd /var/www/pterodactyl > /dev/null 2>&1
+    echo -e "${GREEN}Installing dependencies...${RESET}"
+    yarn install > /dev/null 2>&1
     echo -e "${GREEN}Rebuilding the Panel...${RESET}"
-    yarn install --frozen-lockfile > /dev/null 2>&1
+    export NODE_OPTIONS=--openssl-legacy-provider
     yarn build:production > /dev/null 2>&1
     echo -e "${GREEN}Optimizing the Panel...${RESET}"
     php artisan optimize:clear > /dev/null 2>&1
@@ -83,33 +83,21 @@ restoreBackUp(){
     tar -xvf Pterodactyl_Nightcore_Themebackup.tar.gz > /dev/null 2>&1
     rm Pterodactyl_Nightcore_Themebackup.tar.gz > /dev/null 2>&1
     cd /var/www/pterodactyl > /dev/null 2>&1
+    export NODE_OPTIONS=--openssl-legacy-provider
     yarn build:production > /dev/null 2>&1
     php artisan optimize:clear > /dev/null 2>&1
 }
 
 echo "Unix Dark Theme by RzOffc"
-echo "Based on Pterodactyl Panel v1.11 - v1.12"
-echo ""
+echo "Pterodactyl Panel v1.11 - v1.12"
 echo ""
 echo "[1] Install theme"
 echo "[2] Restore backup"
-echo "[3] Repair panel (use if you have an error in the theme installation)"
+echo "[3] Repair panel"
 echo "[4] Exit"
 
 read -p "Please enter a number: " choice
-if [ $choice == "1" ]
-    then
-    installThemeQuestion
-fi
-if [ $choice == "2" ]
-    then
-    restoreBackUp
-fi
-if [ $choice == "3" ]
-    then
-    repair
-fi
-if [ $choice == "4" ]
-    then
-    exit
-fi
+if [ $choice == "1" ]; then installThemeQuestion; fi
+if [ $choice == "2" ]; then restoreBackUp; fi
+if [ $choice == "3" ]; then repair; fi
+if [ $choice == "4" ]; then exit; fi

@@ -36,9 +36,11 @@
 
 /* Root app container */
 #app {
-  padding-left: var(--sidebar-width) !important;
-  box-sizing: border-box !important;
+  margin-left: var(--sidebar-width) !important;
+  width: calc(100% - var(--sidebar-width)) !important;
   min-height: 100vh !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
 }
 
 /* Top navigation bar (tab Console, Files, dll) */

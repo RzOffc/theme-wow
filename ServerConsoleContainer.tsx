@@ -18,15 +18,28 @@ const ConsoleWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 16px;
+    padding: 12px 8px;
     font-family: 'JetBrains Mono', monospace;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+
+    @media (min-width: 640px) {
+        padding: 16px;
+    }
 `;
 
 const TopRow = styled.div`
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
+    flex-direction: column;
     gap: 12px;
-    align-items: start;
+    align-items: stretch;
+
+    @media (min-width: 640px) {
+        flex-direction: row;
+        align-items: start;
+    }
 `;
 
 const ServerInfo = styled.div`
@@ -60,6 +73,7 @@ const PowerRow = styled.div`
     padding: 14px 18px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 8px;
     backdrop-filter: blur(8px);
 
@@ -70,6 +84,7 @@ const PowerRow = styled.div`
         border-radius: 7px !important;
         font-weight: 500 !important;
         transition: all 0.2s ease !important;
+        flex: 1 1 auto !important;
     }
 `;
 
@@ -114,19 +129,25 @@ const ConsoleTitleText = styled.span`
 const StatsRow = styled.div`
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 8px;
 
     > div {
         background: rgba(15, 21, 38, 0.9) !important;
         border: 1px solid rgba(167, 139, 250, 0.12) !important;
         border-radius: 10px !important;
         backdrop-filter: blur(8px) !important;
-        padding: 12px !important;
+        padding: 10px 12px !important;
         transition: all 0.2s ease !important;
+        height: 120px !important;
+        overflow: hidden !important;
 
         &:hover {
             border-color: rgba(167, 139, 250, 0.35) !important;
             box-shadow: 0 0 15px rgba(167,139,250,0.06) !important;
+        }
+
+        canvas {
+            max-height: 80px !important;
         }
     }
 `;

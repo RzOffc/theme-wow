@@ -72,6 +72,26 @@ div.App___StyledDiv-sc-2l91w7-0.fnfeQw {
   background-color: transparent;
 }
 
+/* Ubah semua background abu-abu di content area jadi transparan */
+div[class*="App___Styled"] {
+  background-color: transparent !important;
+}
+
+/* Background abu-abu di halaman dashboard dan content wrapper */
+div.bg-gray-800,
+div.bg-gray-900,
+div.bg-neutral-800,
+div.bg-neutral-900:not(.shadow-md) {
+  background-color: transparent !important;
+}
+
+/* Content block wrapper utama */
+div[class*="ContentContainer___"],
+div[class*="ServerContentBlock___"],
+div[class*="PageContentBlock___"] {
+  background-color: transparent !important;
+}
+
 /* === Scrollbar === */
 ::-webkit-scrollbar { width: 5px !important; height: 5px !important; }
 ::-webkit-scrollbar-track { background: var(--bg-primary) !important; }

@@ -113,7 +113,7 @@ const ConsoleTitleText = styled.span`
 
 const StatsRow = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
     gap: 10px;
 
     > div {

@@ -12,11 +12,10 @@ installTheme(){
     GREEN='\033[0;32m'
     YELLOW='\033[1;33m'
     BLUE='\033[0;34m'
-    MAGENTA='\033[0;35m'
     CYAN='\033[0;36m'
     RESET='\033[0m'
 
-    echo -e "${GREEN}Installing ${YELLOW}sudo${GREEN} if not installed${RESET}"
+    echo -e "${GREEN}Installing sudo if not installed${RESET}"
     apt install sudo -y > /dev/null 2>&1
     cd /var/www/ > /dev/null 2>&1
     echo -e "${GREEN}Unpack the themebackup...${RESET}"
@@ -42,6 +41,7 @@ installTheme(){
         echo -e "${YELLOW}Upgrading Node.js to v18...${RESET}"
         apt-get remove -y nodejs npm > /dev/null 2>&1
         apt-get autoremove -y > /dev/null 2>&1
+        rm -rf /usr/local/n > /dev/null 2>&1
         curl -fsSL https://deb.nodesource.com/setup_18.x | bash - > /dev/null 2>&1
         apt-get install -y nodejs > /dev/null 2>&1
         echo -e "${GREEN}Node.js $(node -v) installed${RESET}"
@@ -59,6 +59,7 @@ installTheme(){
     yarn build:production > /dev/null 2>&1
     echo -e "${GREEN}Optimizing the Panel...${RESET}"
     php artisan optimize:clear > /dev/null 2>&1
+    echo -e "${GREEN}Done! Hard refresh your browser (Ctrl+Shift+R)${RESET}"
 }
 
 installThemeQuestion(){
@@ -86,8 +87,8 @@ restoreBackUp(){
     php artisan optimize:clear > /dev/null 2>&1
 }
 
-echo "Pink & Cream Theme by RzOffc"
-echo "Based on Pterodactyl Nightcore Theme"
+echo "Unix Dark Theme by RzOffc"
+echo "Based on Pterodactyl Panel v1.11 - v1.12"
 echo ""
 echo ""
 echo "[1] Install theme"

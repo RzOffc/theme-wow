@@ -344,3 +344,147 @@ div.grid.grid-cols-6.gap-2.md:gap-4.col-span-4.lg:col-span-1.order-last.lg:order
 label.PermissionRow__Container-sc-1h899cn-0.icxFlO:hover { background-color: var(--bg-tertiary) !important; }
 .group { background-color: var(--bg-card) !important; }
 div.flex.justify-end.space-x-4.mt-4.w-full.md:mt-0.md:w-48 { background-color: var(--bg-card) !important; }
+
+/* ============================================
+   Console & Terminal Styling
+   ============================================ */
+
+/* === xterm Terminal Background === */
+.xterm {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 13px !important;
+}
+.xterm-screen {
+  background: rgba(2, 4, 12, 0.98) !important;
+}
+.xterm-viewport {
+  background: rgba(2, 4, 12, 0.98) !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(167,139,250,0.15) !important;
+}
+.xterm-rows {
+  padding: 8px !important;
+}
+
+/* === Console Page - Stat Blocks === */
+div.ServerConsoleContainer___StyledDiv-sc-1s6tkss-0,
+div.ServerConsoleContainer___StyledDiv2-sc-1s6tkss-1 {
+  background: rgba(10,14,26,0.95) !important;
+  border: 1px solid rgba(167,139,250,0.12) !important;
+  border-radius: 8px !important;
+}
+
+/* Stat blocks CPU/RAM/Network/Uptime */
+div.StatBlock___StyledDiv-sc-hb3rfq-0,
+div.StatBlock___StyledDiv2-sc-hb3rfq-1 {
+  background: rgba(15,21,38,0.9) !important;
+  border: 1px solid rgba(167,139,250,0.12) !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+div.StatBlock___StyledDiv-sc-hb3rfq-0:hover {
+  border-color: rgba(167,139,250,0.35) !important;
+  box-shadow: 0 0 15px rgba(167,139,250,0.06) !important;
+}
+
+/* Stat block text */
+div.StatBlock___StyledDiv2-sc-hb3rfq-1 p {
+  color: #94a3b8 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+}
+
+/* === Power Buttons === */
+/* Start button */
+button.Button__ButtonStyle-sc-1qu1gou-0[data-stargate-color="green"],
+button[class*="PowerButtons"] {
+  background: linear-gradient(135deg, #059669, #34d399) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 12px rgba(52,211,153,0.3) !important;
+}
+
+/* Restart button */
+button.Button__ButtonStyle-sc-1qu1gou-0[data-stargate-color="yellow"] {
+  background: linear-gradient(135deg, #d97706, #fbbf24) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 12px rgba(251,191,36,0.3) !important;
+}
+
+/* Stop/Kill button */
+button.Button__ButtonStyle-sc-1qu1gou-0[data-stargate-color="red"] {
+  background: linear-gradient(135deg, #dc2626, #f87171) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 12px rgba(248,113,113,0.3) !important;
+}
+
+/* === Chart Blocks === */
+div.ChartBlock___StyledDiv-sc-h1dl0s-0,
+div.ChartBlock___StyledDiv2-sc-h1dl0s-1 {
+  background: rgba(15,21,38,0.9) !important;
+  border: 1px solid rgba(167,139,250,0.12) !important;
+  border-radius: 8px !important;
+}
+
+/* === Console Input Bar === */
+div.ConsoleShare___StyledDiv-sc-7q8ls8-0,
+div[class*="Console"] input,
+div[class*="console"] input {
+  background: rgba(15,21,38,0.95) !important;
+  border: 1px solid rgba(167,139,250,0.2) !important;
+  border-radius: 8px !important;
+  color: #e2e8f0 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* === Server Details Block === */
+div.ServerDetailsBlock___StyledDiv-sc-1ns76y7-0 {
+  background: rgba(15,21,38,0.9) !important;
+  border: 1px solid rgba(167,139,250,0.12) !important;
+  border-radius: 8px !important;
+}
+
+/* === Status Indicator (Online/Offline/Starting) === */
+div[class*="StatusIndicator"] {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* Online status - green glow */
+span[class*="online"], div[class*="online"] {
+  color: #34d399 !important;
+  text-shadow: 0 0 8px rgba(52,211,153,0.5) !important;
+}
+
+/* Offline status */  
+span[class*="offline"], div[class*="offline"] {
+  color: #f87171 !important;
+}
+
+/* Starting status */
+span[class*="starting"], div[class*="starting"] {
+  color: #fbbf24 !important;
+}
+
+/* === Graph/Chart lines color === */
+canvas {
+  filter: hue-rotate(240deg) saturate(1.2) !important;
+}
+
+/* === Console container full page === */
+div.ServerConsoleContainer___StyledDiv3-sc-1s6tkss-2 {
+  background: rgba(2, 4, 12, 0.98) !important;
+  border-radius: 0 0 8px 8px !important;
+}
+
+/* === Scrollbar inside terminal === */
+.xterm-viewport::-webkit-scrollbar { width: 5px; }
+.xterm-viewport::-webkit-scrollbar-track { background: #02040c; }
+.xterm-viewport::-webkit-scrollbar-thumb {
+  background: rgba(167,139,250,0.4);
+  border-radius: 99px;
+}
+.xterm-viewport::-webkit-scrollbar-thumb:hover {
+  background: #a78bfa;
+}

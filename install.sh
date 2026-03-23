@@ -28,9 +28,13 @@ installTheme(){
     echo -e "${GREEN}Removing old theme resources if exist${RESET}"
     rm -f /var/www/pterodactyl/resources/scripts/Pterodactyl_Nightcore_Theme.css > /dev/null 2>&1
     rm -f /var/www/pterodactyl/resources/scripts/index.tsx > /dev/null 2>&1
+    rm -f /var/www/pterodactyl/resources/scripts/components/NavigationBar.tsx > /dev/null 2>&1
+    rm -f /var/www/pterodactyl/resources/scripts/components/server/console/ServerConsoleContainer.tsx > /dev/null 2>&1
     echo -e "${GREEN}Moving the new theme files to directory${RESET}"
     cp index.tsx /var/www/pterodactyl/resources/scripts/index.tsx > /dev/null 2>&1
     cp Pterodactyl_Nightcore_Theme.css /var/www/pterodactyl/resources/scripts/Pterodactyl_Nightcore_Theme.css > /dev/null 2>&1
+    cp NavigationBar.tsx /var/www/pterodactyl/resources/scripts/components/NavigationBar.tsx > /dev/null 2>&1
+    cp ServerConsoleContainer.tsx /var/www/pterodactyl/resources/scripts/components/server/console/ServerConsoleContainer.tsx > /dev/null 2>&1
     cd /var/www/pterodactyl > /dev/null 2>&1
 
     echo -e "${GREEN}Checking Node.js version...${RESET}"

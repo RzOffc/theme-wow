@@ -32,16 +32,19 @@
   font-family: var(--font) !important;
 }
 
-/* === Fix Sidebar Overlap - Push content right === */
-div.w-full.bg-neutral-900.shadow-md.overflow-x-auto {
-  margin-left: var(--sidebar-width) !important;
-  width: calc(100% - var(--sidebar-width)) !important;
-  background-color: rgba(10,14,26,0.8) !important;
+/* === Fix Sidebar Overlap - Push ALL content right === */
+
+/* Root app container */
+#app {
+  padding-left: var(--sidebar-width) !important;
+  box-sizing: border-box !important;
+  min-height: 100vh !important;
 }
 
-/* Main content wrapper */
-div.mx-auto.w-full.flex.items-center {
-  padding-left: 8px !important;
+/* Top navigation bar (tab Console, Files, dll) */
+div.w-full.bg-neutral-900.shadow-md.overflow-x-auto {
+  width: 100% !important;
+  background-color: rgba(10,14,26,0.8) !important;
 }
 
 /* Sub navigation */

@@ -233,6 +233,13 @@ div[class*="console"] {
   overflow: hidden !important;
   width: 100% !important;
 }
+.xterm .xterm-screen {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+.xterm-viewport {
+  overflow-x: hidden !important;
+}
 
 /* === Code Editor === */
 div.CodeMirror {

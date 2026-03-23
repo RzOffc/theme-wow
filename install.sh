@@ -15,9 +15,11 @@ installTheme(){
 
     echo -e "${GREEN}Installing sudo if not installed${RESET}"
     apt install sudo -y > /dev/null 2>&1
+
     cd /var/www/ > /dev/null 2>&1
     echo -e "${GREEN}Unpack the themebackup...${RESET}"
     tar -cvf Pterodactyl_Nightcore_Themebackup.tar.gz pterodactyl > /dev/null 2>&1
+
     echo -e "${GREEN}Installing theme...${RESET}"
     cd /var/www/pterodactyl > /dev/null 2>&1
     echo -e "${GREEN}Removing old theme if exist${RESET}"
@@ -25,17 +27,18 @@ installTheme(){
     echo -e "${GREEN}Download the Theme${RESET}"
     git clone https://github.com/RzOffc/theme-wow.git Pterodactyl_Nightcore_Theme > /dev/null 2>&1
     cd Pterodactyl_Nightcore_Theme > /dev/null 2>&1
+
     echo -e "${GREEN}Removing old theme resources if exist${RESET}"
     rm -f /var/www/pterodactyl/resources/scripts/Pterodactyl_Nightcore_Theme.css > /dev/null 2>&1
     rm -f /var/www/pterodactyl/resources/scripts/index.tsx > /dev/null 2>&1
     rm -f /var/www/pterodactyl/resources/scripts/components/NavigationBar.tsx > /dev/null 2>&1
     rm -f /var/www/pterodactyl/resources/scripts/components/server/console/ServerConsoleContainer.tsx > /dev/null 2>&1
+
     echo -e "${GREEN}Moving the new theme files to directory${RESET}"
     cp index.tsx /var/www/pterodactyl/resources/scripts/index.tsx > /dev/null 2>&1
     cp Pterodactyl_Nightcore_Theme.css /var/www/pterodactyl/resources/scripts/Pterodactyl_Nightcore_Theme.css > /dev/null 2>&1
     cp NavigationBar.tsx /var/www/pterodactyl/resources/scripts/components/NavigationBar.tsx > /dev/null 2>&1
     cp ServerConsoleContainer.tsx /var/www/pterodactyl/resources/scripts/components/server/console/ServerConsoleContainer.tsx > /dev/null 2>&1
-    cd /var/www/pterodactyl > /dev/null 2>&1
 
     echo -e "${GREEN}Checking Node.js version...${RESET}"
     NODE_VER=$(node -v 2>/dev/null | sed 's/v//' | cut -d. -f1)
@@ -55,11 +58,16 @@ installTheme(){
         npm install -g yarn > /dev/null 2>&1
     fi
 
+    # Set NODE_OPTIONS permanen
+    if ! grep -q "openssl-legacy-provider" /etc/environment 2>/dev/null; then
+        echo 'NODE_OPTIONS=--openssl-legacy-provider' >> /etc/environment
+    fi
+    export NODE_OPTIONS=--openssl-legacy-provider
+
     cd /var/www/pterodactyl > /dev/null 2>&1
     echo -e "${GREEN}Installing dependencies...${RESET}"
     yarn install > /dev/null 2>&1
     echo -e "${GREEN}Rebuilding the Panel...${RESET}"
-    export NODE_OPTIONS=--openssl-legacy-provider
     yarn build:production > /dev/null 2>&1
     echo -e "${GREEN}Optimizing the Panel...${RESET}"
     php artisan optimize:clear > /dev/null 2>&1

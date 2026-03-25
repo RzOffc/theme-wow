@@ -46,6 +46,31 @@ installTheme(){
     # Copy admin CSS ke public folder
     cp admin.style.css /var/www/pterodactyl/public/admin.style.css > /dev/null 2>&1
 
+    echo -e "${GREEN}Installing video background for login...${RESET}"
+# Copy video files from bg/ folder to public/themes
+mkdir -p /var/www/pterodactyl/public/themes
+if [ -f "bg/bg.mp4" ]; then
+    cp -a bg/bg.mp4 /var/www/pterodactyl/public/themes/bg.mp4 > /dev/null 2>&1
+    echo -e "${GREEN}bg.mp4 copied to public/themes${RESET}"
+fi
+
+# Inject video HTML ke login.blade.php
+LOGIN_BLADE="/var/www/pterodactyl/resources/views/auth/login.blade.php"
+if [ -f "$LOGIN_BLADE" ]; then
+    if ! grep -q 'id="video-bg"' "$LOGIN_BLADE"; then
+        # Add video element at the start of body
+        sed -i '/@extends/a\
+<!-- Video Background -->\
+<div id="video-bg" class="video-bg">\
+    <video autoplay muted loop playsinline>\
+        <source src="{{ asset('"'"'themes/bg.mp4'"'"') }}" type="video/mp4">\
+    </video>\
+    <div class="video-overlay"></div>\
+</div>' "$LOGIN_BLADE"
+        echo -e "${GREEN}Video HTML injected into login blade${RESET}"
+    fi
+fi
+
     # Inject link CSS ke admin layout blade jika belum ada
     ADMIN_BLADE="/var/www/pterodactyl/resources/views/layouts/admin.blade.php"
     if [ -f "$ADMIN_BLADE" ]; then

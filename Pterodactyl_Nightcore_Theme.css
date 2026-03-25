@@ -1,6 +1,6 @@
 /* ============================================
    Pterodactyl Unix-Style Dark Theme by RzOffc
-   With MP4 Video Background
+   With Video Background
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
@@ -26,18 +26,48 @@
   font-family: var(--font) !important;
 }
 
-/* === LOGIN PAGE BACKGROUND === */
-body, html {
-  margin: 0 !important;
-  padding: 0 !important;
-  background-color: #0a0e1a !important;
+/* === VIDEO BACKGROUND === */
+#video-bg {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0 !important;
+  overflow: hidden !important;
+}
+
+#video-bg video {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  transform: translate(-50%, -50%) !important;
+  object-fit: cover !important;
+  filter: brightness(0.65) saturate(0.85) !important;
+}
+
+.video-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  background: linear-gradient(180deg, rgba(27,17,44,0.1) 0%, rgba(10,8,30,0.4) 100%) !important;
+  z-index: 1 !important;
+}
+
+/* === LOGIN PAGE === */
+body {
+  background: transparent !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   min-height: 100vh !important;
+  margin: 0 !important;
+  padding: 20px !important;
 }
 
-/* === LOGIN FORM STYLING === */
 div.LoginFormContainer___StyledDiv-sc-cyh04c-3 {
   position: relative !important;
   z-index: 10 !important;
@@ -62,13 +92,11 @@ div.LoginFormContainer___StyledDiv-sc-cyh04c-3 h2 {
   font-size: 22px !important;
   font-weight: 600 !important;
   margin-bottom: 8px !important;
-  text-align: center !important;
 }
 
 div.LoginFormContainer___StyledDiv-sc-cyh04c-3 p {
   color: rgba(255, 255, 255, 0.7) !important;
   font-size: 13px !important;
-  text-align: center !important;
 }
 
 div.LoginFormContainer___StyledDiv-sc-cyh04c-3 input.form-control {
@@ -78,14 +106,12 @@ div.LoginFormContainer___StyledDiv-sc-cyh04c-3 input.form-control {
   border-radius: 8px !important;
   padding: 12px 14px !important;
   margin-bottom: 14px !important;
-  font-size: 14px !important;
 }
 
 div.LoginFormContainer___StyledDiv-sc-cyh04c-3 input.form-control:focus {
   background: rgba(255, 255, 255, 0.08) !important;
   border-color: #3b82f6 !important;
   box-shadow: 0 0 15px rgba(59, 130, 246, 0.3) !important;
-  outline: none !important;
 }
 
 div.LoginFormContainer___StyledDiv-sc-cyh04c-3 button.btn-primary {
@@ -97,7 +123,6 @@ div.LoginFormContainer___StyledDiv-sc-cyh04c-3 button.btn-primary {
   padding: 12px !important;
   margin-top: 20px !important;
   font-weight: 600 !important;
-  font-size: 14px !important;
   box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
   cursor: pointer !important;
   transition: all 0.3s ease !important;
@@ -113,7 +138,12 @@ img.LoginFormContainer___StyledImg-sc-cyh04c-5 {
   display: none !important;
 }
 
-/* === PANEL PAGES BACKGROUND === */
+/* === PANEL PAGES === */
+html {
+  background: radial-gradient(ellipse at center, rgba(10,12,30,0.2) 0%, rgba(3,6,20,0.5) 70%), #020617 !important;
+  background-attachment: fixed !important;
+}
+
 #app {
   margin-left: var(--sidebar-width) !important;
   width: calc(100% - var(--sidebar-width)) !important;
@@ -121,18 +151,15 @@ img.LoginFormContainer___StyledImg-sc-cyh04c-5 {
   box-sizing: border-box !important;
   position: relative !important;
   z-index: 2 !important;
-  background: radial-gradient(ellipse at center, rgba(10,12,30,0.2) 0%, rgba(3,6,20,0.5) 70%), #020617 !important;
-  background-attachment: fixed !important;
 }
 
-/* === NAVIGATION === */
 div.w-full.bg-neutral-900.shadow-md.overflow-x-auto {
   background-color: rgba(10, 14, 26, 0.9) !important;
   backdrop-filter: blur(12px) !important;
   border-bottom: 1px solid rgba(167, 139, 250, 0.1) !important;
 }
 
-/* === CARDS GLASS MORPHISM === */
+/* === CARDS === */
 div.GreyRowBox-sc-1xo9c6v-0 {
   background-color: rgba(15, 21, 38, 0.5) !important;
   border: 1px solid rgba(167, 139, 250, 0.15) !important;

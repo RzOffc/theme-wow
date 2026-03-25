@@ -59,6 +59,27 @@ installTheme(){
         echo -e "${YELLOW}Admin blade layout not found, skipping BetterAdmin...${RESET}"
     fi
 
+    echo -e "${GREEN}Installing video background for login...${RESET}"
+# Copy video files from bg/ folder to public/themes if they exist in repo
+mkdir -p /var/www/pterodactyl/public/themes
+if [ -f "bg/bg.mp4" ]; then
+    cp -a bg/bg.mp4 /var/www/pterodactyl/public/themes/bg.mp4 > /dev/null 2>&1
+    echo -e "${GREEN}bg.mp4 copied to public/themes${RESET}"
+fi
+if [ -f "bg/bg.webm" ]; then
+    cp -a bg/bg.webm /var/www/pterodactyl/public/themes/bg.webm > /dev/null 2>&1
+    echo -e "${GREEN}bg.webm copied to public/themes${RESET}"
+fi
+
+# Inject video HTML ke login.blade.php jika belum ada
+LOGIN_BLADE="/var/www/pterodactyl/resources/views/auth/login.blade.php"
+if [ -f "$LOGIN_BLADE" ]; then
+    if ! grep -q 'class="video-bg"' "$LOGIN_BLADE"; then
+        sed -i '/@section.*content/a\    <div class="video-bg" aria-hidden="true">\n        <video id="bg-video" autoplay muted loop playsinline>\n            <source src="{{ asset('"'"'themes/bg.webm'"'"') }}" type="video/webm">\n            <source src="{{ asset('"'"'themes/bg.mp4'"'"') }}" type="video/mp4">\n        </video>\n        <div class="video-overlay"></div>\n    </div>' "$LOGIN_BLADE"
+        echo -e "${GREEN}Video HTML injected into login blade${RESET}"
+    fi
+fi
+
     echo -e "${GREEN}Patching background to transparent...${RESET}"
     # Fix background halaman utama - bg-neutral-800 -> bg-transparent
     GLOBAL_CSS="/var/www/pterodactyl/resources/scripts/assets/css/GlobalStylesheet.ts"

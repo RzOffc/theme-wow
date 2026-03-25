@@ -40,6 +40,25 @@ installTheme(){
     cp NavigationBar.tsx /var/www/pterodactyl/resources/scripts/components/NavigationBar.tsx > /dev/null 2>&1
     cp ServerConsoleContainer.tsx /var/www/pterodactyl/resources/scripts/components/server/console/ServerConsoleContainer.tsx > /dev/null 2>&1
 
+    echo -e "${GREEN}Patching background to transparent...${RESET}"
+    # Fix background halaman utama - bg-neutral-800 -> bg-transparent
+    GLOBAL_CSS="/var/www/pterodactyl/resources/scripts/assets/css/GlobalStylesheet.ts"
+    if [ -f "$GLOBAL_CSS" ]; then
+        sed -i 's/bg-neutral-800/bg-transparent/g' "$GLOBAL_CSS"
+        echo -e "${GREEN}GlobalStylesheet patched${RESET}"
+    else
+        echo -e "${YELLOW}GlobalStylesheet.ts not found, skipping...${RESET}"
+    fi
+
+    # Fix background terminal Console.tsx - hitam -> transparent
+    CONSOLE_TSX="/var/www/pterodactyl/resources/scripts/components/server/console/Console.tsx"
+    if [ -f "$CONSOLE_TSX" ]; then
+        sed -i "s/background: th\`colors\.black\`\.toString()/background: 'transparent'/g" "$CONSOLE_TSX"
+        echo -e "${GREEN}Console.tsx patched${RESET}"
+    else
+        echo -e "${YELLOW}Console.tsx not found, skipping...${RESET}"
+    fi
+
     echo -e "${GREEN}Checking Node.js version...${RESET}"
     NODE_VER=$(node -v 2>/dev/null | sed 's/v//' | cut -d. -f1)
     if [ -z "$NODE_VER" ] || [ "$NODE_VER" -lt 18 ]; then

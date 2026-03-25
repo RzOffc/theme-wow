@@ -33,12 +33,31 @@ installTheme(){
     rm -f /var/www/pterodactyl/resources/scripts/index.tsx > /dev/null 2>&1
     rm -f /var/www/pterodactyl/resources/scripts/components/NavigationBar.tsx > /dev/null 2>&1
     rm -f /var/www/pterodactyl/resources/scripts/components/server/console/ServerConsoleContainer.tsx > /dev/null 2>&1
+    rm -f /var/www/pterodactyl/resources/scripts/components/server/console/Console.tsx > /dev/null 2>&1
 
     echo -e "${GREEN}Moving the new theme files to directory${RESET}"
     cp index.tsx /var/www/pterodactyl/resources/scripts/index.tsx > /dev/null 2>&1
     cp Pterodactyl_Nightcore_Theme.css /var/www/pterodactyl/resources/scripts/Pterodactyl_Nightcore_Theme.css > /dev/null 2>&1
     cp NavigationBar.tsx /var/www/pterodactyl/resources/scripts/components/NavigationBar.tsx > /dev/null 2>&1
     cp ServerConsoleContainer.tsx /var/www/pterodactyl/resources/scripts/components/server/console/ServerConsoleContainer.tsx > /dev/null 2>&1
+    cp Console.tsx /var/www/pterodactyl/resources/scripts/components/server/console/Console.tsx > /dev/null 2>&1
+
+    echo -e "${GREEN}Installing BetterAdmin theme...${RESET}"
+    # Copy admin CSS ke public folder
+    cp admin.style.css /var/www/pterodactyl/public/admin.style.css > /dev/null 2>&1
+
+    # Inject link CSS ke admin layout blade jika belum ada
+    ADMIN_BLADE="/var/www/pterodactyl/resources/views/layouts/admin.blade.php"
+    if [ -f "$ADMIN_BLADE" ]; then
+        if ! grep -q "admin.style.css" "$ADMIN_BLADE"; then
+            sed -i 's|</head>|    <link rel="stylesheet" href="/admin.style.css">\n</head>|' "$ADMIN_BLADE"
+            echo -e "${GREEN}BetterAdmin CSS injected to admin layout${RESET}"
+        else
+            echo -e "${YELLOW}BetterAdmin CSS already injected, skipping...${RESET}"
+        fi
+    else
+        echo -e "${YELLOW}Admin blade layout not found, skipping BetterAdmin...${RESET}"
+    fi
 
     echo -e "${GREEN}Patching background to transparent...${RESET}"
     # Fix background halaman utama - bg-neutral-800 -> bg-transparent
@@ -48,15 +67,6 @@ installTheme(){
         echo -e "${GREEN}GlobalStylesheet patched${RESET}"
     else
         echo -e "${YELLOW}GlobalStylesheet.ts not found, skipping...${RESET}"
-    fi
-
-    # Fix background terminal Console.tsx - hitam -> transparent
-    CONSOLE_TSX="/var/www/pterodactyl/resources/scripts/components/server/console/Console.tsx"
-    if [ -f "$CONSOLE_TSX" ]; then
-        sed -i "s/background: th\`colors\.black\`\.toString()/background: 'transparent'/g" "$CONSOLE_TSX"
-        echo -e "${GREEN}Console.tsx patched${RESET}"
-    else
-        echo -e "${YELLOW}Console.tsx not found, skipping...${RESET}"
     fi
 
     echo -e "${GREEN}Checking Node.js version...${RESET}"
@@ -113,6 +123,14 @@ restoreBackUp(){
     cd /var/www/ > /dev/null 2>&1
     tar -xvf Pterodactyl_Nightcore_Themebackup.tar.gz > /dev/null 2>&1
     rm Pterodactyl_Nightcore_Themebackup.tar.gz > /dev/null 2>&1
+
+    # Hapus BetterAdmin CSS dan injection
+    rm -f /var/www/pterodactyl/public/admin.style.css > /dev/null 2>&1
+    ADMIN_BLADE="/var/www/pterodactyl/resources/views/layouts/admin.blade.php"
+    if [ -f "$ADMIN_BLADE" ]; then
+        sed -i '/admin.style.css/d' "$ADMIN_BLADE"
+    fi
+
     cd /var/www/pterodactyl > /dev/null 2>&1
     export NODE_OPTIONS=--openssl-legacy-provider
     yarn build:production > /dev/null 2>&1

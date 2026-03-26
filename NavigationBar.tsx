@@ -7,7 +7,7 @@ import {
     faTerminal, faFolder, faDatabase,
     faClock, faRocket, faUsers, faWrench,
     faArchive, faNetworkWired, faSearch,
-    faChartBar
+    faChartBar, faBars, faTimes // <-- Menambahkan ikon Hamburger & Close
 } from '@fortawesome/free-solid-svg-icons';
 import { ApplicationStore } from '@/state';
 import { ServerContext } from '@/state/server';
@@ -18,20 +18,38 @@ import Tooltip from '@/components/elements/tooltip/Tooltip';
 import Avatar from '@/components/Avatar';
 import { useStoreState } from 'easy-peasy';
 
-const Sidebar = styled.div`
+// === MODIFIKASI: Menambahkan animasi dinamis pada Sidebar ===
+const Sidebar = styled.div<{ $isOpen: boolean }>`
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
+    /* Jika tertutup, tingginya hanya 52px (seukuran 1 tombol). Jika terbuka, full 100vh */
+    height: ${props => props.$isOpen ? '100vh' : '52px'};
     width: 56px;
-    background: rgba(10, 14, 26, 0.98);
-    border-right: 1px solid rgba(167, 139, 250, 0.15);
+    background: ${props => props.$isOpen ? 'rgba(10, 14, 26, 0.98)' : 'rgba(10, 14, 26, 0.7)'};
+    border-right: 1px solid ${props => props.$isOpen ? 'rgba(167, 139, 250, 0.15)' : 'transparent'};
+    border-bottom-right-radius: ${props => props.$isOpen ? '0' : '16px'};
     display: flex;
     flex-direction: column;
     align-items: center;
     z-index: 9999;
     backdrop-filter: blur(12px);
     padding: 8px 0;
+    overflow: hidden; /* Menyembunyikan ikon yang ada di bawahnya saat dilipat */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: ${props => props.$isOpen ? 'none' : '0 4px 15px rgba(0,0,0,0.4)'};
+`;
+
+// === MODIFIKASI: Membungkus menu lain agar bisa diberi efek fade/hilang ===
+const InnerMenu = styled.div<{ $isOpen: boolean }>`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    flex-grow: 1;
+    opacity: ${props => props.$isOpen ? 1 : 0};
+    pointer-events: ${props => props.$isOpen ? 'auto' : 'none'};
+    transition: opacity 0.3s ease;
 `;
 
 const LogoBtn = styled.div`
@@ -45,6 +63,11 @@ const LogoBtn = styled.div`
     margin-bottom: 8px;
     flex-shrink: 0;
     cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 12px rgba(124, 58, 237, 0.5);
+    }
 `;
 
 const Divider = styled.div`
@@ -209,9 +232,11 @@ const ServerNavItems = ({ id }: { id: string }) => {
 export default () => {
     const location = useLocation();
     const rootAdmin = useStoreState((state: ApplicationStore) => state.user.data!.rootAdmin);
+    
+    // === MODIFIKASI: Menambahkan State untuk Buka/Tutup Sidebar ===
     const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const [isOpen, setIsOpen] = useState(false); 
 
-    // Detect if we're on a server page
     const serverMatch = location.pathname.match(/^\/server\/([^/]+)/);
     const serverId = serverMatch ? serverMatch[1] : null;
 
@@ -226,54 +251,57 @@ export default () => {
     return (
         <>
             <SpinnerOverlay visible={isLoggingOut} />
-            <Sidebar>
-                <Tooltip placement={'right'} content={'Dashboard'}>
-                    <LogoBtn onClick={() => window.location.href = '/'}>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                        </svg>
+            <Sidebar $isOpen={isOpen}>
+                
+                {/* === TOMBOL MENU UTAMA (TOGGLE) === */}
+                <Tooltip placement={'right'} content={isOpen ? 'Close Menu' : 'Open Menu'}>
+                    <LogoBtn onClick={() => setIsOpen(!isOpen)}>
+                        <FontAwesomeIcon icon={isOpen ? faTimes : faBars} style={{ color: 'white', fontSize: '18px' }} />
                     </LogoBtn>
                 </Tooltip>
 
-                <Tooltip placement={'right'} content={'Dashboard'}>
-                    <IconBtn to={'/'} exact>
-                        <FontAwesomeIcon icon={faLayerGroup} />
-                    </IconBtn>
-                </Tooltip>
+                {/* === SEMUA TOMBOL LAINNYA DI DALAM WRAPPER INI === */}
+                <InnerMenu $isOpen={isOpen}>
+                    <Tooltip placement={'right'} content={'Dashboard'}>
+                        <IconBtn to={'/'} exact onClick={() => setIsOpen(false)}>
+                            <FontAwesomeIcon icon={faLayerGroup} />
+                        </IconBtn>
+                    </Tooltip>
 
-                <Tooltip placement={'right'} content={'Search'}>
-                    <IconBtn to={'/search'}>
-                        <FontAwesomeIcon icon={faSearch} />
-                    </IconBtn>
-                </Tooltip>
+                    <Tooltip placement={'right'} content={'Search'}>
+                        <IconBtn to={'/search'} onClick={() => setIsOpen(false)}>
+                            <FontAwesomeIcon icon={faSearch} />
+                        </IconBtn>
+                    </Tooltip>
 
-                {/* Server menu items - only show when on server page */}
-                {serverId && <ServerNavItems id={serverId} />}
+                    {serverId && <ServerNavItems id={serverId} />}
 
-                {rootAdmin && (
-                    <>
+                    {rootAdmin && (
+                        <>
+                            <Divider />
+                            <Tooltip placement={'right'} content={'Admin Panel'}>
+                                <IconBtnA href={'/admin'} rel={'noreferrer'}>
+                                    <FontAwesomeIcon icon={faCogs} />
+                                </IconBtnA>
+                            </Tooltip>
+                        </>
+                    )}
+
+                    <BottomGroup>
                         <Divider />
-                        <Tooltip placement={'right'} content={'Admin Panel'}>
-                            <IconBtnA href={'/admin'} rel={'noreferrer'}>
-                                <FontAwesomeIcon icon={faCogs} />
-                            </IconBtnA>
+                        <Tooltip placement={'right'} content={'Account Settings'}>
+                            <AvatarBtn to={'/account'} onClick={() => setIsOpen(false)}>
+                                <Avatar.User />
+                            </AvatarBtn>
                         </Tooltip>
-                    </>
-                )}
+                        <Tooltip placement={'right'} content={'Sign Out'}>
+                            <LogoutIconBtn onClick={onTriggerLogout}>
+                                <FontAwesomeIcon icon={faSignOutAlt} />
+                            </LogoutIconBtn>
+                        </Tooltip>
+                    </BottomGroup>
+                </InnerMenu>
 
-                <BottomGroup>
-                    <Divider />
-                    <Tooltip placement={'right'} content={'Account Settings'}>
-                        <AvatarBtn to={'/account'}>
-                            <Avatar.User />
-                        </AvatarBtn>
-                    </Tooltip>
-                    <Tooltip placement={'right'} content={'Sign Out'}>
-                        <LogoutIconBtn onClick={onTriggerLogout}>
-                            <FontAwesomeIcon icon={faSignOutAlt} />
-                        </LogoutIconBtn>
-                    </Tooltip>
-                </BottomGroup>
             </Sidebar>
         </>
     );

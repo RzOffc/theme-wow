@@ -42,8 +42,9 @@ const TopRow = styled.div`
     }
 `;
 
+/* Dikembalikan ke semula tanpa padding-left berlebih */
 const ServerInfo = styled.div`
-    background: rgba(15, 21, 38, 0.2) !important; /* Dibuat jauh lebih transparan (kaca tipis) */
+    background: rgba(15, 21, 38, 0.2) !important;
     border: 1px solid rgba(167, 139, 250, 0.15);
     border-radius: 10px;
     padding: 14px 18px;
@@ -75,7 +76,7 @@ const ServerDesc = styled.p`
 `;
 
 const PowerRow = styled.div`
-    background: rgba(15, 21, 38, 0.2) !important; /* Dibuat jauh lebih transparan */
+    background: rgba(15, 21, 38, 0.2) !important; 
     border: 1px solid rgba(167, 139, 250, 0.15);
     border-radius: 10px;
     padding: 14px 18px;
@@ -97,7 +98,7 @@ const PowerRow = styled.div`
 `;
 
 const ConsoleBox = styled.div`
-    background: rgba(10, 14, 26, 0.15) !important; /* Warna dasar konsol ditipiskan drastis */
+    background: rgba(10, 14, 26, 0.15) !important;
     backdrop-filter: blur(10px) !important; 
     border: 1px solid rgba(167, 139, 250, 0.15);
     border-radius: 10px;
@@ -109,7 +110,7 @@ const ConsoleBox = styled.div`
     .xterm {
         font-family: 'JetBrains Mono', monospace !important;
         font-size: 13px !important;
-        padding: 0 !important;
+        padding: 0 !important; /* WAJIB 0 AGAR CANVAS TIDAK ERROR/TERPOTONG */
         background: transparent !important;
     }
 
@@ -119,7 +120,15 @@ const ConsoleBox = styled.div`
         width: 100% !important;
         left: 0 !important;
         background: transparent !important;
+        padding: 0 !important; /* WAJIB 0 */
     }
+`;
+
+// === FIX: BUNGKUS AMAN UNTUK MENGGESER TERMINAL ===
+const TerminalSafePadding = styled.div`
+    padding: 8px 16px 16px 16px; /* Ini yang akan memberi jarak aman (16px) di kiri dan kanan terminal */
+    width: 100%;
+    box-sizing: border-box;
 `;
 
 const ConsoleDots = styled.div`
@@ -128,7 +137,7 @@ const ConsoleDots = styled.div`
     gap: 6px;
     padding: 10px 14px;
     border-bottom: 1px solid rgba(167, 139, 250, 0.1);
-    background: transparent !important; /* Header konsol dibuat 100% transparan */
+    background: transparent !important; 
 `;
 
 const Dot = styled.span<{ color: string }>`
@@ -142,7 +151,7 @@ const Dot = styled.span<{ color: string }>`
 const ConsoleTitleText = styled.span`
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    color: #cbd5e1; /* Sedikit dicerahkan agar lebih terbaca di background bening */
+    color: #cbd5e1; 
     margin-left: 8px;
 `;
 
@@ -152,7 +161,7 @@ const StatsRow = styled.div`
     gap: 8px;
 
     > div {
-        background: rgba(15, 21, 38, 0.2) !important; /* Dibuat jauh lebih transparan */
+        background: rgba(15, 21, 38, 0.2) !important;
         border: 1px solid rgba(167, 139, 250, 0.12) !important;
         border-radius: 10px !important;
         backdrop-filter: blur(8px) !important;
@@ -174,7 +183,7 @@ const StatsRow = styled.div`
 
 const DetailsRow = styled.div`
     > div {
-        background: rgba(15, 21, 38, 0.2) !important; /* Dibuat jauh lebih transparan */
+        background: rgba(15, 21, 38, 0.2) !important;
         border: 1px solid rgba(167, 139, 250, 0.12) !important;
         border-radius: 10px !important;
         backdrop-filter: blur(8px) !important;
@@ -222,7 +231,10 @@ const ServerConsoleContainer = () => {
                         <ConsoleTitleText>{name} — Console</ConsoleTitleText>
                     </ConsoleDots>
                     <Spinner.Suspense>
-                        <Console />
+                        {/* Konsol sekarang dibungkus dengan wrapper aman ini */}
+                        <TerminalSafePadding>
+                            <Console />
+                        </TerminalSafePadding>
                     </Spinner.Suspense>
                 </ConsoleBox>
 

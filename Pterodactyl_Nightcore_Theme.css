@@ -224,12 +224,6 @@ textarea.Input__Textarea-sc-19rce1w-1:focus {
   background-color: transparent !important;
 }
 
-/* Menggeser teks log (tulisan di dalam terminal) sedikit ke kanan */
-.xterm-viewport {
-  padding-left: 12px !important; /* Nilai ini yang menggeser teks ke kanan. Bisa Anda tambah/kurangi. */
-  padding-right: 12px !important; /* Sekalian diberi jarak di kanan agar seimbang */
-}
-
 /* Menargetkan area konsol agar semi-transparan buram */
 div[class*="Terminal___StyledDiv"] {
   background-color: rgba(10, 14, 26, 0.15) !important; /* Warna gelap semi-transparan */

@@ -1,6 +1,6 @@
 /* ============================================
    Pterodactyl Unix-Style Dark Theme by RzOffc
-   With Video Background
+   With Video Background (Fixed Transparency)
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
@@ -26,14 +26,29 @@
   font-family: var(--font) !important;
 }
 
-/* === VIDEO BACKGROUND === */
+/* === GLOBAL TRANSPARENCY UNTUK VIDEO === */
+/* Ini sangat penting agar tag <video> di HTML bisa terlihat */
+html, body {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  min-height: 100vh !important;
+  margin: 0 !important;
+}
+
+/* Menimpa warna solid bawaan Pterodactyl (bg-neutral-900) agar transparan */
+.bg-neutral-900 {
+  background-color: rgba(15, 15, 20, 0.4) !important; /* Sedikit gelap agar teks tetap terbaca */
+}
+
+/* === VIDEO BACKGROUND WRAPPER (Opsional jika pakai div) === */
 #video-bg {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  z-index: 0 !important;
+  z-index: -999 !important;
   overflow: hidden !important;
 }
 
@@ -54,20 +69,10 @@
   position: absolute !important;
   inset: 0 !important;
   background: transparent !important;
-  z-index: 1 !important;
+  z-index: -998 !important;
 }
 
 /* === LOGIN PAGE === */
-body {
-  background: transparent !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-height: 100vh !important;
-  margin: 0 !important;
-  padding: 20px !important;
-}
-
 div.LoginFormContainer___StyledDiv-sc-cyh04c-3 {
   position: relative !important;
   z-index: 10 !important;
@@ -76,6 +81,7 @@ div.LoginFormContainer___StyledDiv-sc-cyh04c-3 {
   border: none !important;
   box-shadow: none !important;
   padding: 0 !important;
+  margin: 10vh auto !important; /* Menyelaraskan ke tengah */
 }
 
 div.LoginFormContainer___StyledDiv-sc-cyh04c-3 > div {
@@ -139,12 +145,8 @@ img.LoginFormContainer___StyledImg-sc-cyh04c-5 {
 }
 
 /* === PANEL PAGES === */
-html {
-  background: radial-gradient(ellipse at center, rgba(10,12,30,0.2) 0%, rgba(3,6,20,0.5) 70%), #020617 !important;
-  background-attachment: fixed !important;
-}
-
 #app {
+  background: transparent !important;
   margin-left: var(--sidebar-width) !important;
   width: calc(100% - var(--sidebar-width)) !important;
   min-height: 100vh !important;
@@ -153,8 +155,9 @@ html {
   z-index: 2 !important;
 }
 
+/* Navbar Atas */
 div.w-full.bg-neutral-900.shadow-md.overflow-x-auto {
-  background-color: rgba(10, 14, 26, 0.9) !important;
+  background-color: rgba(10, 14, 26, 0.7) !important;
   backdrop-filter: blur(12px) !important;
   border-bottom: 1px solid rgba(167, 139, 250, 0.1) !important;
 }

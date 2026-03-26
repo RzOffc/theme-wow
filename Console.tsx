@@ -19,6 +19,7 @@ import { ChevronDoubleRightIcon } from '@heroicons/react/solid';
 import 'xterm/css/xterm.css';
 import styles from './style.module.css';
 
+// === MODIFIKASI: Pastikan background xterm benar-benar transparan ===
 const theme = {
     background: 'transparent',
     cursor: 'transparent',
@@ -44,7 +45,7 @@ const theme = {
 const terminalProps: ITerminalOptions = {
     disableStdin: true,
     cursorStyle: 'underline',
-    allowTransparency: true,
+    allowTransparency: true, // WAJIB TRUE
     fontSize: 12,
     fontFamily: th('fontFamily.mono'),
     rows: 30,
@@ -143,6 +144,12 @@ export default () => {
                 }
                 return true;
             });
+
+            // === MODIFIKASI: Memaksa viewport xterm menjadi transparan saat diload ===
+            const viewport = ref.current.querySelector('.xterm-viewport') as HTMLElement;
+            if (viewport) {
+                viewport.style.backgroundColor = 'transparent';
+            }
         }
     }, [terminal, connected]);
 
@@ -186,15 +193,38 @@ export default () => {
     }, [connected, instance]);
 
     return (
-        <div className={classNames(styles.terminal, 'relative')}>
+        // === MODIFIKASI: Menimpa background container utama dengan style Inline Glassmorphism ===
+        <div 
+            className={classNames(styles.terminal, 'relative')}
+            style={{ 
+                background: 'rgba(10, 14, 26, 0.4)', // Warna dasar semi-transparan
+                backdropFilter: 'blur(10px)',         // Efek buram (glassmorphism)
+                borderRadius: '12px',
+                border: '1px solid rgba(167, 139, 250, 0.2)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+                overflow: 'hidden'
+            }}
+        >
             <SpinnerOverlay visible={!connected} size={'large'} />
-            <div className={classNames(styles.container, styles.overflows_container, { 'rounded-b': !canSendCommands })}>
-                <div className={'h-full'}>
-                    <div id={styles.terminal} ref={ref} />
+            
+            {/* Mematikan background hitam bawaan style.module.css */}
+            <div 
+                className={classNames(styles.container, styles.overflows_container, { 'rounded-b': !canSendCommands })}
+                style={{ background: 'transparent', backgroundColor: 'transparent' }} 
+            >
+                <div className={'h-full'} style={{ background: 'transparent' }}>
+                    <div id={styles.terminal} ref={ref} style={{ background: 'transparent' }} />
                 </div>
             </div>
+
             {canSendCommands && (
-                <div className={classNames('relative', styles.overflows_container)}>
+                <div 
+                    className={classNames('relative', styles.overflows_container)}
+                    style={{ 
+                        background: 'rgba(0, 0, 0, 0.2)', // Membuat area input command sedikit lebih gelap
+                        borderTop: '1px solid rgba(167, 139, 250, 0.1)' 
+                    }}
+                >
                     <input
                         className={classNames('peer', styles.command_input)}
                         type={'text'}
@@ -204,6 +234,7 @@ export default () => {
                         onKeyDown={handleCommandKeyDown}
                         autoCorrect={'off'}
                         autoCapitalize={'none'}
+                        style={{ background: 'transparent', color: '#fff' }} // Memastikan input box transparan
                     />
                     <div
                         className={classNames(

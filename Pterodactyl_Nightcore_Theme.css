@@ -1,6 +1,6 @@
 /* ============================================
    Pterodactyl Unix-Style Dark Theme by RzOffc
-   With Video Background (Fixed Transparency)
+   With Video Background (Update Terminal Transparency)
    ============================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap');
@@ -42,9 +42,26 @@ body {
   overscroll-behavior: none !important; /* Memastikan efek scroll mentok mati sepenuhnya */
 }
 
-/* Menimpa warna solid bawaan Pterodactyl (bg-neutral-900) agar transparan */
+/* === PANEL PAGES (Lebih Lebar Ke Kiri) === */
+#app {
+  background: transparent !important;
+  margin-left: 0 !important; /* Menghilangkan sisa ruang kosong di sebelah kiri */
+  width: 100% !important; /* Memaksimalkan lebar panel ke seluruh layar */
+  min-height: 100vh !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  z-index: 1 !important;
+  padding-top: 10px !important; /* Memberi sedikit jarak aman di atas terminal setelah bar menu dihilangkan */
+}
+
+/* Sembunyikan Bar Menu Atas (ConsoleFilesDatabases...) - Disembunyikan Total */
+div.w-full.bg-neutral-900.shadow-md.overflow-x-auto {
+  display: none !important;
+}
+
+/* Navbar Atas (Warna Bawaan) - Sedikit Transparan agar video terlihat samar */
 .bg-neutral-900 {
-  background-color: rgba(15, 15, 20, 0.4) !important; /* Sedikit gelap agar teks tetap terbaca */
+  background-color: rgba(15, 15, 20, 0.4) !important; 
 }
 
 /* === VIDEO BACKGROUND WRAPPER (Opsional jika pakai div) === */
@@ -150,22 +167,6 @@ img.LoginFormContainer___StyledImg-sc-cyh04c-5 {
   display: none !important;
 }
 
-/* === PANEL PAGES === */
-#app {
-  background: transparent !important;
-  margin-left: 0 !important; /* Menarik konten ke kiri untuk mengisi ruang kosong */
-  width: 100% !important; /* Memaksimalkan layar penuh */
-  min-height: 100vh !important;
-  box-sizing: border-box !important;
-  position: relative !important;
-  z-index: 1 !important;
-}
-
-/* Navbar Atas (Console, Files, Databases, dll) - Disembunyikan Total */
-div.w-full.bg-neutral-900.shadow-md.overflow-x-auto {
-  display: none !important; /* Kode ini yang akan menghilangkan deretan teks tersebut */
-}
-
 /* === CARDS === */
 div.GreyRowBox-sc-1xo9c6v-0 {
   background-color: rgba(15, 21, 38, 0.5) !important;
@@ -216,12 +217,20 @@ textarea.Input__Textarea-sc-19rce1w-1:focus {
   box-shadow: 0 0 12px rgba(167, 139, 250, 0.3) !important;
 }
 
-/* === TERMINAL === */
-div.xterm-viewport {
-  background-color: rgba(2, 4, 12, 0.8) !important;
-  border: 1px solid rgba(167, 139, 250, 0.15) !important;
-  border-radius: 10px !important;
-  backdrop-filter: blur(10px) !important;
+/* === UPDATE TERMINAL (SEMI-TRANSPARENT BLUR) === */
+/* Membuat area log konsol semi-transparan buram (kaca), teks log melayang di atasnya */
+.xterm, .xterm-viewport, .xterm-screen {
+  background-color: transparent !important;
+}
+
+/* Menargetkan area konsol agar semi-transparan buram (Gaya image_1.png) */
+div[class*="Terminal___StyledDiv"] {
+  background-color: rgba(10, 14, 26, 0.6) !important; /* Warna gelap semi-transparan */
+  backdrop-filter: blur(10px) !important; /* Efek kaca/blur */
+  border-radius: 12px !important;
+  padding: 20px !important;
+  border: 1px solid rgba(167, 139, 250, 0.2) !important; /* Garis tepi tipis warna aksen */
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* === MODALS === */

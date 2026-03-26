@@ -54,9 +54,19 @@ body {
   padding-top: 10px !important; /* Memberi sedikit jarak aman di atas terminal setelah bar menu dihilangkan */
 }
 
-/* Sembunyikan Bar Menu Atas (ConsoleFilesDatabases...) - Disembunyikan Total */
-div.w-full.bg-neutral-900.shadow-md.overflow-x-auto {
+/* === MENGHAPUS TOTAL SUB-NAVIGATION BAR MENU ATAS === */
+div[class*="SubNavigation"],
+div.w-full.shadow-md.overflow-x-auto,
+div.w-full[class*="overflow-x-auto"] {
   display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  z-index: -9999 !important;
 }
 
 /* Navbar Atas (Warna Bawaan) - Sedikit Transparan agar video terlihat samar */

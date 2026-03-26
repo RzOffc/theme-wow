@@ -194,32 +194,39 @@ export default () => {
         <div 
             className={classNames(styles.terminal, 'relative')}
             style={{ 
-                background: 'rgba(10, 14, 26, 0.4)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '12px',
-                border: '1px solid rgba(167, 139, 250, 0.2)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
-                overflow: 'hidden'
+                display: 'flex', 
+                flexDirection: 'column', 
+                height: '100%', 
+                background: 'transparent' 
             }}
         >
             <SpinnerOverlay visible={!connected} size={'large'} />
             
+            {/* === FIX 1: Area Terminal === */}
             <div 
                 className={classNames(styles.container, styles.overflows_container, { 'rounded-b': !canSendCommands })}
-                style={{ background: 'transparent', backgroundColor: 'transparent' }} 
+                style={{ 
+                    background: 'transparent', 
+                    flex: 1, /* Membiarkan terminal mengisi sisa ruang atas dengan aman */
+                    padding: '10px 16px', /* Menjaga jarak teks ke kanan */
+                    boxSizing: 'border-box', /* KUNCI: Mencegah padding membesarkan kotak */
+                    minHeight: '0' /* Mencegah bug overflow */
+                }} 
             >
-                {/* === FIX UTAMA: Jarak aman (Padding) diinjeksikan langsung ke kerangka pembungkus xterm === */}
-                <div className={'h-full'} style={{ background: 'transparent', padding: '10px 16px' }}>
+                <div className={'h-full'} style={{ background: 'transparent' }}>
                     <div id={styles.terminal} ref={ref} style={{ background: 'transparent' }} />
                 </div>
             </div>
 
+            {/* === FIX 2: Area Input (Bisa diklik & Rapi kembali) === */}
             {canSendCommands && (
                 <div 
                     className={classNames('relative', styles.overflows_container)}
                     style={{ 
                         background: 'rgba(0, 0, 0, 0.2)', 
-                        borderTop: '1px solid rgba(167, 139, 250, 0.1)' 
+                        borderTop: '1px solid rgba(167, 139, 250, 0.1)',
+                        flexShrink: 0, /* KUNCI: Mencegah kotak input tergencet terminal */
+                        zIndex: 10 /* Memastikan bisa diklik */
                     }}
                 >
                     <input
@@ -231,14 +238,13 @@ export default () => {
                         onKeyDown={handleCommandKeyDown}
                         autoCorrect={'off'}
                         autoCapitalize={'none'}
-                        style={{ background: 'transparent', color: '#fff', paddingLeft: '16px' }} 
+                        style={{ background: 'transparent', color: '#fff' }} /* Dikembalikan ke bawaan Pterodactyl */
                     />
                     <div
                         className={classNames(
                             'text-gray-100 peer-focus:text-gray-50 peer-focus:animate-pulse',
                             styles.command_icon
                         )}
-                        style={{ right: '16px' }}
                     >
                         <ChevronDoubleRightIcon className={'w-4 h-4'} />
                     </div>

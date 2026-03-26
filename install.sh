@@ -60,6 +60,21 @@ installTheme(){
         echo -e "${YELLOW}Admin blade layout not found, skipping BetterAdmin...${RESET}"
     fi
 
+    # ==========================================
+# PEMASANGAN BACKGROUND VIDEO
+# ==========================================
+echo "Memasang background video..."
+
+# 1. Memindahkan file video ke folder public Pterodactyl agar bisa diakses browser
+cp bg/bg.mp4 /var/www/pterodactyl/public/bg.mp4
+
+# 2. Menyisipkan tag video ke dalam wrapper.blade.php (Halaman Client/User)
+# Perintah sed ini akan mencari tag <body> dan menambahkan video tepat di bawahnya.
+# Halaman Admin tidak akan terpengaruh karena menggunakan admin.blade.php yang berbeda.
+sed -i '/<body/a \    <video autoplay muted loop playsinline style="position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -9999; object-fit: cover; pointer-events: none;"><source src="/bg.mp4" type="video/mp4"></video>' /var/www/pterodactyl/resources/views/templates/wrapper.blade.php
+
+echo "Background video berhasil dipasang!"
+    
     echo -e "${GREEN}Installing video background for login...${RESET}"
 # Copy video files from bg/ folder to public
 mkdir -p /var/www/pterodactyl/public/themes

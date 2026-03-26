@@ -218,17 +218,24 @@ textarea.Input__Textarea-sc-19rce1w-1:focus {
 }
 
 /* === UPDATE TERMINAL (SEMI-TRANSPARENT BLUR) === */
+/* === UPDATE TERMINAL (SEMI-TRANSPARENT BLUR) === */
 /* Membuat area log konsol semi-transparan buram (kaca), teks log melayang di atasnya */
 .xterm, .xterm-viewport, .xterm-screen {
   background-color: transparent !important;
 }
 
-/* Menargetkan area konsol agar semi-transparan buram (Gaya image_1.png) */
+/* Menggeser teks log (tulisan di dalam terminal) sedikit ke kanan */
+.xterm-viewport {
+  padding-left: 12px !important; /* Nilai ini yang menggeser teks ke kanan. Bisa Anda tambah/kurangi. */
+  padding-right: 12px !important; /* Sekalian diberi jarak di kanan agar seimbang */
+}
+
+/* Menargetkan area konsol agar semi-transparan buram */
 div[class*="Terminal___StyledDiv"] {
-  background-color: rgba(10, 14, 26, 0.6) !important; /* Warna gelap semi-transparan */
+  background-color: rgba(10, 14, 26, 0.15) !important; /* Warna gelap semi-transparan */
   backdrop-filter: blur(10px) !important; /* Efek kaca/blur */
   border-radius: 12px !important;
-  padding: 20px !important;
+  padding: 10px !important; /* Sedikit padding luar */
   border: 1px solid rgba(167, 139, 250, 0.2) !important; /* Garis tepi tipis warna aksen */
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.4) !important;
 }

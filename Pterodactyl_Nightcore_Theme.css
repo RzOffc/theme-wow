@@ -219,11 +219,23 @@ textarea.Input__Textarea-sc-19rce1w-1:focus {
 }
 
 /* === TERMINAL === */
+.xterm, .xterm-viewport, .xterm-screen {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
 div.xterm-viewport {
-  background-color: rgba(2, 4, 12, 0.8) !important;
-  border: 1px solid rgba(167, 139, 250, 0.15) !important;
-  border-radius: 10px !important;
-  backdrop-filter: blur(10px) !important;
+  background-color: transparent !important;
+  border: none !important; 
+  backdrop-filter: none !important; 
+  box-shadow: none !important;
+}
+
+div[class*="Terminal___StyledDiv"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 /* === MODALS === */

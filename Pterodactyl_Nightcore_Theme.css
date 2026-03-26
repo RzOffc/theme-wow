@@ -28,12 +28,18 @@
 
 /* === GLOBAL TRANSPARENCY UNTUK VIDEO === */
 /* Ini sangat penting agar tag <video> di HTML bisa terlihat */
-html, body {
+html {
+  background-color: #050812 !important; /* Mengubah warna dasar kanvas browser menjadi gelap pekat */
+  overscroll-behavior: none !important; /* Mematikan efek tarikan/pantulan putih di ujung halaman */
+}
+
+body {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
   min-height: 100vh !important;
   margin: 0 !important;
+  overscroll-behavior: none !important; /* Memastikan efek scroll mentok mati sepenuhnya */
 }
 
 /* Menimpa warna solid bawaan Pterodactyl (bg-neutral-900) agar transparan */

@@ -43,7 +43,7 @@ const TopRow = styled.div`
 `;
 
 const ServerInfo = styled.div`
-    background: rgba(15, 21, 38, 0.9);
+    background: rgba(15, 21, 38, 0.5); /* Diturunkan transparansinya */
     border: 1px solid rgba(167, 139, 250, 0.15);
     border-radius: 10px;
     padding: 14px 18px;
@@ -75,7 +75,7 @@ const ServerDesc = styled.p`
 `;
 
 const PowerRow = styled.div`
-    background: rgba(15, 21, 38, 0.9);
+    background: rgba(15, 21, 38, 0.5); /* Diturunkan transparansinya */
     border: 1px solid rgba(167, 139, 250, 0.15);
     border-radius: 10px;
     padding: 14px 18px;
@@ -96,12 +96,14 @@ const PowerRow = styled.div`
     }
 `;
 
+// === MODIFIKASI UTAMA: Membuat Container Konsol Menjadi Transparan Buram ===
 const ConsoleBox = styled.div`
-    background: rgba(2, 4, 12, 0.98);
+    background: rgba(10, 14, 26, 0.4) !important; /* Warna semi-transparan */
+    backdrop-filter: blur(10px) !important; /* Efek buram (glassmorphism) */
     border: 1px solid rgba(167, 139, 250, 0.15);
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     width: 100%;
     box-sizing: border-box;
 
@@ -109,6 +111,7 @@ const ConsoleBox = styled.div`
         font-family: 'JetBrains Mono', monospace !important;
         font-size: 13px !important;
         padding: 0 !important;
+        background: transparent !important; /* WAJIB TRANSPARAN */
     }
 
     .xterm-screen,
@@ -116,16 +119,18 @@ const ConsoleBox = styled.div`
     .xterm-viewport {
         width: 100% !important;
         left: 0 !important;
+        background: transparent !important; /* WAJIB TRANSPARAN */
     }
 `;
 
+// === MODIFIKASI: Bagian Header Terminal Dibuat Semi-Transparan Juga ===
 const ConsoleDots = styled.div`
     display: flex;
     align-items: center;
     gap: 6px;
     padding: 10px 14px;
-    border-bottom: 1px solid rgba(167, 139, 250, 0.08);
-    background: rgba(10, 14, 26, 0.95);
+    border-bottom: 1px solid rgba(167, 139, 250, 0.15);
+    background: rgba(0, 0, 0, 0.2); /* Sangat transparan agar menyatu dengan ConsoleBox */
 `;
 
 const Dot = styled.span<{ color: string }>`
@@ -149,7 +154,7 @@ const StatsRow = styled.div`
     gap: 8px;
 
     > div {
-        background: rgba(15, 21, 38, 0.9) !important;
+        background: rgba(15, 21, 38, 0.5) !important; /* Diturunkan transparansinya */
         border: 1px solid rgba(167, 139, 250, 0.12) !important;
         border-radius: 10px !important;
         backdrop-filter: blur(8px) !important;
@@ -171,7 +176,7 @@ const StatsRow = styled.div`
 
 const DetailsRow = styled.div`
     > div {
-        background: rgba(15, 21, 38, 0.9) !important;
+        background: rgba(15, 21, 38, 0.5) !important; /* Diturunkan transparansinya */
         border: 1px solid rgba(167, 139, 250, 0.12) !important;
         border-radius: 10px !important;
         backdrop-filter: blur(8px) !important;

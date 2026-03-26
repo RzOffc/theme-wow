@@ -45,7 +45,6 @@ installTheme(){
     echo -e "${GREEN}Installing BetterAdmin theme...${RESET}"
     # Copy admin CSS ke public folder
     cp admin.style.css /var/www/pterodactyl/public/admin.style.css > /dev/null 2>&1
-    echo -e "${GREEN}Installing video background for login...${RESET}"
     
     # Inject link CSS ke admin layout blade jika belum ada
     ADMIN_BLADE="/var/www/pterodactyl/resources/views/layouts/admin.blade.php"
@@ -61,54 +60,45 @@ installTheme(){
     fi
 
     # ==========================================
-# PEMASANGAN BACKGROUND VIDEO
-# ==========================================
-echo "Memasang background video..."
+    # PEMASANGAN BACKGROUND VIDEO
+    # ==========================================
+    echo -e "${GREEN}Installing video background...${RESET}"
+    mkdir -p /var/www/pterodactyl/public/themes
 
-# 1. Memindahkan file video ke folder public Pterodactyl agar bisa diakses browser
-cp bg/bg.mp4 /var/www/pterodactyl/public/bg.mp4
+    if [ -f "bg/bg.mp4" ]; then
+        cp -a bg/bg.mp4 /var/www/pterodactyl/public/themes/bg.mp4 > /dev/null 2>&1
+        echo -e "${GREEN}bg.mp4 copied to public/themes${RESET}"
+    fi
+    if [ -f "bg/bg.webm" ]; then
+        cp -a bg/bg.webm /var/www/pterodactyl/public/themes/bg.webm > /dev/null 2>&1
+        echo -e "${GREEN}bg.webm copied to public/themes${RESET}"
+    fi
 
-# 2. Menyisipkan tag video ke dalam wrapper.blade.php (Halaman Client/User)
-# Perintah sed ini akan mencari tag <body> dan menambahkan video tepat di bawahnya.
-# Halaman Admin tidak akan terpengaruh karena menggunakan admin.blade.php yang berbeda.
-sed -i '/<body/a \    <video autoplay muted loop playsinline style="position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -9999; object-fit: cover; pointer-events: none;"><source src="/bg.mp4" type="video/mp4"></video>' /var/www/pterodactyl/resources/views/templates/wrapper.blade.php
+    # Inject ke wrapper.blade.php (Halaman Panel Client)
+    WRAPPER_BLADE="/var/www/pterodactyl/resources/views/templates/wrapper.blade.php"
+    if [ -f "$WRAPPER_BLADE" ]; then
+        # Hapus tag lama jika ada agar tidak double
+        sed -i '/id="bg-video-theme"/d' "$WRAPPER_BLADE"
+        # Tambahkan tag video baru
+        sed -i '/<body/a \    <video id="bg-video-theme" autoplay muted loop playsinline style="position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -9999; object-fit: cover; pointer-events: none;"><source src="/themes/bg.mp4" type="video/mp4"></video>' "$WRAPPER_BLADE"
+        echo -e "${GREEN}Video background injected to wrapper.blade.php${RESET}"
+    fi
 
-echo "Background video berhasil dipasang!"
-    
-    echo -e "${GREEN}Installing video background for login...${RESET}"
-# Copy video files from bg/ folder to public
-mkdir -p /var/www/pterodactyl/public/themes
-if [ -f "bg/bg.mp4" ]; then
-    cp -a bg/bg.mp4 /var/www/pterodactyl/public/themes/bg.mp4 > /dev/null 2>&1
-    echo -e "${GREEN}bg.mp4 copied to public/themes${RESET}"
-fi
-if [ -f "bg/bg.webm" ]; then
-    cp -a bg/bg.webm /var/www/pterodactyl/public/themes/bg.webm > /dev/null 2>&1
-    echo -e "${GREEN}bg.webm copied to public/themes${RESET}"
-fi
-
-# Inject video HTML ke login.blade.php
-LOGIN_BLADE="/var/www/pterodactyl/resources/views/auth/login.blade.php"
-if [ -f "$LOGIN_BLADE" ]; then
-    # Backup original
-    cp "$LOGIN_BLADE" "$LOGIN_BLADE.backup"
-    
-    # Add video wrapper at start of file content
-    sed -i '/@section/i\
-<!-- Video Background -->\
+    # Inject ke login.blade.php
+    LOGIN_BLADE="/var/www/pterodactyl/resources/views/auth/login.blade.php"
+    if [ -f "$LOGIN_BLADE" ]; then
+        cp "$LOGIN_BLADE" "$LOGIN_BLADE.backup"
+        sed -i '/id="video-bg"/,+7d' "$LOGIN_BLADE" # Hapus inject lama
+        sed -i '/@section/i\
 <div id="video-bg" class="video-bg" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden;">\
     <video autoplay muted loop playsinline style="position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover; filter: brightness(0.6) saturate(0.85);">\
-        <source src="{{ asset('"'"'themes/bg.webm'"'"') }}" type="video/webm">\
-        <source src="{{ asset('"'"'themes/bg.mp4'"'"') }}" type="video/mp4">\
+        <source src="/themes/bg.mp4" type="video/mp4">\
     </video>\
-    <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(27,17,44,0.15) 0%, rgba(10,8,30,0.45) 100%); z-index: 1;"></div>\
 </div>' "$LOGIN_BLADE"
-    
-    echo -e "${GREEN}Video HTML injected into login blade${RESET}"
-fi
+        echo -e "${GREEN}Video background injected to login blade${RESET}"
+    fi
     
     echo -e "${GREEN}Patching background to transparent...${RESET}"
-    # Fix background halaman utama - bg-neutral-800 -> bg-transparent
     GLOBAL_CSS="/var/www/pterodactyl/resources/scripts/assets/css/GlobalStylesheet.ts"
     if [ -f "$GLOBAL_CSS" ]; then
         sed -i 's/bg-neutral-800/bg-transparent/g' "$GLOBAL_CSS"
@@ -135,7 +125,6 @@ fi
         npm install -g yarn > /dev/null 2>&1
     fi
 
-    # Set NODE_OPTIONS permanen
     if ! grep -q "openssl-legacy-provider" /etc/environment 2>/dev/null; then
         echo 'NODE_OPTIONS=--openssl-legacy-provider' >> /etc/environment
     fi
@@ -147,6 +136,8 @@ fi
     echo -e "${GREEN}Rebuilding the Panel...${RESET}"
     yarn build:production > /dev/null 2>&1
     echo -e "${GREEN}Optimizing the Panel...${RESET}"
+    php artisan view:clear > /dev/null 2>&1
+    php artisan config:clear > /dev/null 2>&1
     php artisan optimize:clear > /dev/null 2>&1
     echo -e "${GREEN}Done! Hard refresh your browser (Ctrl+Shift+R)${RESET}"
 }
@@ -172,7 +163,6 @@ restoreBackUp(){
     tar -xvf Pterodactyl_Nightcore_Themebackup.tar.gz > /dev/null 2>&1
     rm Pterodactyl_Nightcore_Themebackup.tar.gz > /dev/null 2>&1
 
-    # Hapus BetterAdmin CSS dan injection
     rm -f /var/www/pterodactyl/public/admin.style.css > /dev/null 2>&1
     ADMIN_BLADE="/var/www/pterodactyl/resources/views/layouts/admin.blade.php"
     if [ -f "$ADMIN_BLADE" ]; then
@@ -182,6 +172,7 @@ restoreBackUp(){
     cd /var/www/pterodactyl > /dev/null 2>&1
     export NODE_OPTIONS=--openssl-legacy-provider
     yarn build:production > /dev/null 2>&1
+    php artisan view:clear > /dev/null 2>&1
     php artisan optimize:clear > /dev/null 2>&1
 }
 

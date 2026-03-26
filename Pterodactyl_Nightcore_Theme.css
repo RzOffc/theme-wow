@@ -153,19 +153,17 @@ img.LoginFormContainer___StyledImg-sc-cyh04c-5 {
 /* === PANEL PAGES === */
 #app {
   background: transparent !important;
-  margin-left: var(--sidebar-width) !important;
-  width: calc(100% - var(--sidebar-width)) !important;
+  margin-left: 0 !important; /* Menarik konten ke kiri untuk mengisi ruang kosong */
+  width: 100% !important; /* Memaksimalkan layar penuh */
   min-height: 100vh !important;
   box-sizing: border-box !important;
   position: relative !important;
-  z-index: 2 !important;
+  z-index: 1 !important;
 }
 
-/* Navbar Atas */
+/* Navbar Atas (Console, Files, Databases, dll) - Disembunyikan Total */
 div.w-full.bg-neutral-900.shadow-md.overflow-x-auto {
-  background-color: rgba(10, 14, 26, 0.7) !important;
-  backdrop-filter: blur(12px) !important;
-  border-bottom: 1px solid rgba(167, 139, 250, 0.1) !important;
+  display: none !important; /* Kode ini yang akan menghilangkan deretan teks tersebut */
 }
 
 /* === CARDS === */

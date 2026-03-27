@@ -7,7 +7,8 @@ import {
     faTerminal, faFolder, faDatabase,
     faClock, faRocket, faUsers, faWrench,
     faArchive, faNetworkWired, faSearch,
-    faChartBar, faBars, faTimes // <-- Menambahkan ikon Hamburger & Close
+    faChartBar, faBars, faTimes,
+    faKey // <-- Menambahkan ikon Kunci untuk pembuatan API PTLC
 } from '@fortawesome/free-solid-svg-icons';
 import { ApplicationStore } from '@/state';
 import { ServerContext } from '@/state/server';
@@ -265,6 +266,13 @@ export default () => {
                     <Tooltip placement={'right'} content={'Dashboard'}>
                         <IconBtn to={'/'} exact onClick={() => setIsOpen(false)}>
                             <FontAwesomeIcon icon={faLayerGroup} />
+                        </IconBtn>
+                    </Tooltip>
+
+                    {/* === TAMBAHAN: TOMBOL PEMBUATAN API PTLC === */}
+                    <Tooltip placement={'right'} content={'PTLC API'}>
+                        <IconBtn to={'/account/api'} onClick={() => setIsOpen(false)}> {/* <-- Ganti '/account/api' jika rute PTLC Anda berbeda */}
+                            <FontAwesomeIcon icon={faKey} />
                         </IconBtn>
                     </Tooltip>
 

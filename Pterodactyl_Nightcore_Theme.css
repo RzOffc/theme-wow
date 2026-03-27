@@ -178,20 +178,32 @@ img.LoginFormContainer___StyledImg-sc-cyh04c-5 {
 }
 
 /* === CARDS === */
-div.GreyRowBox-sc-1xo9c6v-0 {
-  background-color: rgba(15, 21, 38, 0.5) !important;
-  border: 1px solid rgba(167, 139, 250, 0.15) !important;
-  border-radius: 10px !important;
-  backdrop-filter: blur(12px) !important;
-  transition: all 0.3s ease !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+/* === EFEK KACA KOTAK LIST SERVER DI DASHBOARD === */
+div[class*="GreyRowBox"],
+a[class*="GreyRowBox"],
+div[class*="ServerRow"] {
+    background-color: rgba(10, 14, 26, 0.15) !important; /* Warna dasar sangat tipis/transparan */
+    backdrop-filter: blur(10px) !important; /* Efek buram kaca */
+    -webkit-backdrop-filter: blur(10px) !important; /* Dukungan untuk browser mobile */
+    border: 1px solid rgba(167, 139, 250, 0.15) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.3s ease !important;
 }
 
-div.GreyRowBox-sc-1xo9c6v-0:hover {
-  background-color: rgba(22, 29, 53, 0.6) !important;
-  border-color: rgba(167, 139, 250, 0.3) !important;
-  box-shadow: 0 6px 25px rgba(167, 139, 250, 0.2) !important;
-  transform: translateY(-2px) !important;
+/* Efek menyala sedikit saat kotak server ditekan/disentuh */
+div[class*="GreyRowBox"]:hover,
+a[class*="GreyRowBox"]:hover,
+div[class*="ServerRow"]:hover {
+    background-color: rgba(10, 14, 26, 0.25) !important;
+    border-color: rgba(167, 139, 250, 0.4) !important;
+    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.2) !important;
+}
+
+/* Mengatur bulatan ikon di dalam kotak server agar ikut transparan */
+div[class*="ServerRow"] > div:first-child {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
 }
 
 /* === BUTTONS === */

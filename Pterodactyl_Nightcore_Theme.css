@@ -265,6 +265,50 @@ div.Modal___StyledDiv2-sc-9vzni8-3 {
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.6) !important;
 }
 
+/* === EFEK KACA UNTUK KOTAK KONTEN (AKUN, API, SETTINGS, DLL) === */
+div.bg-neutral-900,
+div.bg-neutral-800,
+div.bg-gray-800,
+div.bg-gray-900,
+form.bg-neutral-900,
+form.bg-gray-800 {
+    background-color: rgba(10, 14, 26, 0.15) !important; /* Kaca tipis */
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(167, 139, 250, 0.15) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+    border-radius: 12px !important;
+}
+
+/* Header kotak (misal judul tabel) agar sedikit lebih gelap dari bodinya */
+div.bg-neutral-700,
+div.bg-gray-700 {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border-bottom: 1px solid rgba(167, 139, 250, 0.1) !important;
+}
+
+/* === EFEK KACA UNTUK KOTAK INPUT (TEXT, PASSWORD, TEXTAREA) === */
+input.bg-neutral-800,
+textarea.bg-neutral-800,
+select.bg-neutral-800,
+input.bg-gray-800,
+textarea.bg-gray-800 {
+    background-color: rgba(0, 0, 0, 0.3) !important; /* Area ketik lebih gelap sedikit */
+    border: 1px solid rgba(167, 139, 250, 0.2) !important;
+    color: #e2e8f0 !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Efek menyala saat kotak input sedang diketik */
+input:focus, 
+textarea:focus, 
+select:focus {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    border-color: rgba(167, 139, 250, 0.6) !important;
+    box-shadow: 0 0 12px rgba(167, 139, 250, 0.2) !important;
+}
+
 /* === BOXES === */
 div.TitledGreyBox___StyledDiv-sc-gvsoy-0,
 div.TitledGreyBox___StyledDiv2-sc-gvsoy-1,
